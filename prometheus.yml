@@ -1,0 +1,7 @@
+global :
+  scrape_interval : 1s
+
+scrape_configs:
+  - job_name: 'nestjs_app'
+    static_configs:
+      - targets: ['localhost:4000'] # Sesuaikan dengan host dan port aplikasi Anda

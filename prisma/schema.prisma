@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id       String @id
+  idk      String?
+  satuan   String?
+  fullname String?
+  username String?
+  password String?
+  tpg      Json?   @map("json_data")
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model price {
+  no       Int    @id @default(autoincrement())
+  datetime String
+  harga    String
+  updatedAt DateTime @updatedAt
+}
+
+model log {
+  id    Int    @id @default(autoincrement())
+  event String
+}
+
+model tpg {
+  kodeTpg  String @id
+  namaTpg  String
+  jenisTpg String
+  updatedAt DateTime @updatedAt
+}
+
+model tarif_getah {
+  MutuId      String  @id
+  MutuNama    String
+  TarifPungut Decimal
+  TarifSarpra String
+  updatedAt DateTime @updatedAt
+}
+
+model geo {
+  id          Int    @id @default(autoincrement())
+  kodeDivisi  String
+  kodeSatuan  String
+  kodeArea    String
+  kodeWilayah String
+  kodePetak   String @unique
+  namaPetak   String
+  kodeTpg     String
+  jarak       String
+  updatedAt DateTime @updatedAt
+}
+
+model penyadap {
+  idPenyadap   String @id
+  namaPenyadap String?
+  kodePetak    String
+  kodeTpg      String
+  updatedAt DateTime @updatedAt
+}
+
+model tarif_pikul {
+  Jarak String @unique
+  Tarif String
+  updatedAt DateTime @updatedAt
+}
+
+model penerimaan_getah {
+  id             String?
+  divisi         String
+  satuan         String
+  area           String
+  wilayah        String
+  petak          String
+  tpg            String
+  idk            String
+  penyadap       String
+  mutu           String
+  jumlah         String
+  harga_dasar    String
+  harga_tambahan String
+  total          String
+  mb_idtrans     String   @id
+  mb_uuid        String
+  mb_imei        String
+  mb_upload_by   String
+  mb_upload_date DateTime
+  mb_upload_time String
+  created_at     DateTime?
+  updatedAt DateTime @updatedAt
+}
+
+model ping {
+  id     Int     @id
+  online Boolean
+  updatedAt DateTime @updatedAt
+}
+
+model imeiHasGeo {
+  id      Int     @id
+  imei    String  @unique
+  kodeWilayah     String @unique
+}

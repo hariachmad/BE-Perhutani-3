@@ -1,0 +1,28 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const testing_1 = require("@nestjs/testing");
+const log_controller_1 = require("./log.controller");
+const log_service_1 = require("./log.service");
+const prisma_service_1 = require("../../../../../../../src/prisma/prisma.service");
+describe('LogController', () => {
+    let controller;
+    beforeEach(() => __awaiter(void 0, void 0, void 0, function* () {
+        const module = yield testing_1.Test.createTestingModule({
+            controllers: [log_controller_1.LogController],
+            providers: [log_service_1.LogService, prisma_service_1.PrismaService],
+        }).compile();
+        controller = module.get(log_controller_1.LogController);
+    }));
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
+});

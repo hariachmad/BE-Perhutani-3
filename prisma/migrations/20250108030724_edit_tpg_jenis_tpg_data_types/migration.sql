@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "tpg" ALTER COLUMN "jenisTpg" SET DATA TYPE TEXT;
