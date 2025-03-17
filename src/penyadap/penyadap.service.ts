@@ -28,9 +28,10 @@ export class PenyadapService {
   async Upsert(createPenyadapDto: CreatePenyadapDto) {
     try {
       return await this.prisma.penyadap.upsert({
-        where: { idPenyadap: createPenyadapDto.idPenyadap },
+        where: {
+          idPenyadap: createPenyadapDto.idPenyadap,
+        },
         update: {
-          kodePetak: createPenyadapDto.kodePetak,
           kodeTpg: createPenyadapDto.kodeTpg,
           namaPenyadap: createPenyadapDto.namaPenyadap,
         },

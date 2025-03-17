@@ -176,7 +176,7 @@ export class PollingService implements OnModuleInit {
       .pipe(
         startWith(0),
         switchMap(() => this.pollDataUsers()),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data) => {
         const users: IUser[] = data;
@@ -195,7 +195,7 @@ export class PollingService implements OnModuleInit {
       .pipe(
         startWith(0),
         switchMap(() => this.pollDataTarifGetah()),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data) => {
         if (data) {
@@ -216,7 +216,7 @@ export class PollingService implements OnModuleInit {
       .pipe(
         startWith(0),
         switchMap(() => this.pollDataTarifPikul()),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data) => {
         if (data) {
@@ -245,7 +245,7 @@ export class PollingService implements OnModuleInit {
           }
           return this.userHasTpgService.partialToTpgUsers(users);
         }),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data: TpgUsersDto[]) => {
         if (data) {
@@ -279,7 +279,7 @@ export class PollingService implements OnModuleInit {
             await this.userHasTpgService.getDataUsersWithTpg();
           return users;
         }),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data: UserDto[]) => {
         if (data) {
@@ -314,7 +314,7 @@ export class PollingService implements OnModuleInit {
             await this.userHasTpgService.getDataUsersWithTpg();
           return users;
         }),
-        retry(86400),
+        retry(100),
       )
       .subscribe((data: UserDto[]) => {
         if (data) {
