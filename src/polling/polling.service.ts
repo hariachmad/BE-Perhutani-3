@@ -1,6 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { firstValueFrom, interval, retry, startWith, switchMap } from 'rxjs';
+import {
+  firstValueFrom,
+  interval,
+  retry,
+  startWith,
+  switchMap,
+  timer,
+} from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from 'src/users/users.service';
 import { IUser } from 'src/users/interface/IUser';
@@ -172,9 +179,11 @@ export class PollingService implements OnModuleInit {
   // ];
 
   onModuleInit() {
-    interval(this.configService.get<number>('POLLING_USER_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_USER_START'),
+      this.configService.get<number>('POLLING_USER_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(() => this.pollDataUsers()),
         retry(100),
       )
@@ -191,9 +200,11 @@ export class PollingService implements OnModuleInit {
         this.logger.log('Upserted User');
       });
 
-    interval(this.configService.get<number>('POLLING_TARIF_GETAH_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_TARIF_GETAH_START'),
+      this.configService.get<number>('POLLING_TARIF_GETAH_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(() => this.pollDataTarifGetah()),
         retry(100),
       )
@@ -212,9 +223,11 @@ export class PollingService implements OnModuleInit {
           this.logger.log('Data Tarif Getah Tidak ada');
         }
       });
-    interval(this.configService.get<number>('POLLING_TARIF_PIKUL_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_TARIF_PIKUL_START'),
+      this.configService.get<number>('POLLING_TARIF_PIKUL_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(() => this.pollDataTarifPikul()),
         retry(100),
       )
@@ -233,9 +246,11 @@ export class PollingService implements OnModuleInit {
           this.logger.log('Data tarif pikul tidak ada');
         }
       });
-    interval(this.configService.get<number>('POLLING_TPG_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_TPG_START'),
+      this.configService.get<number>('POLLING_TPG_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(async () => {
           const users: UserDto[] =
             await this.userHasTpgService.getDataUsersWithTpg();
@@ -270,9 +285,11 @@ export class PollingService implements OnModuleInit {
           this.logger.log('Data TPG Tidak ada');
         }
       });
-    interval(this.configService.get<number>('POLLING_GEO_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_GEO_START'),
+      this.configService.get<number>('POLLING_GEO_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(async () => {
           console.log('get data users with tpg');
           const users: UserDto[] =
@@ -305,9 +322,11 @@ export class PollingService implements OnModuleInit {
           this.logger.log('Data GEO Tidak ada');
         }
       });
-    interval(this.configService.get<number>('POLLING_PENYADAP_INTERVAL'))
+    timer(
+      this.configService.get<number>('POLLING_PENYADAP_START'),
+      this.configService.get<number>('POLLING_PENYADAP_INTERVAL'),
+    )
       .pipe(
-        startWith(0),
         switchMap(async () => {
           console.log('get data penyadap');
           const users: UserDto[] =
