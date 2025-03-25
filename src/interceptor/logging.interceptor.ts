@@ -20,7 +20,6 @@ export class LoggingInterceptor implements NestInterceptor {
         );
         let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'base64');
         encrypted += cipher.final('base64');
-        console.log('Response has sent : ', encrypted);
         return {
           encrypted: encrypted,
         };

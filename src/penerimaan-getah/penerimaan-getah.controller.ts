@@ -72,7 +72,6 @@ export class PenerimaanGetahController {
     const result = await this.penerimaanGetahService.createPenerimaanGetah(
       createPenerimaanGetah,
     );
-    console.log('result: ', result);
     if (result) {
       return {
         id: createPenerimaanGetah.id,
@@ -114,14 +113,6 @@ export class PenerimaanGetahController {
     @Query('startDate') startDate: Date,
     @Query('endDate') endDate: Date,
   ): Promise<any> {
-    console.log(
-      'idMandor: ',
-      idMandor,
-      ' startDate: ',
-      startDate,
-      'endDate: ',
-      endDate,
-    );
     const results: [] = await this.penerimaanGetahService.findByMandorDate(
       idMandor,
       startDate,
@@ -181,7 +172,6 @@ export class PenerimaanGetahController {
       );
 
       setTimeout(() => {
-        console.log('Selesai setelah 2 detik');
         file.pipe(res);
         fs.unlink(filePath, (err) => {
           if (err) {
@@ -209,8 +199,6 @@ export class PenerimaanGetahController {
         ? `Client Posting with IP : ${ip}, Success`
         : `Client Posting with IP : ${ip}, Failed`,
     );
-
-    console.log('result : ', result);
 
     if (typeof result == 'string') {
       const response = await this.getIdTransPenerimaanGetah(

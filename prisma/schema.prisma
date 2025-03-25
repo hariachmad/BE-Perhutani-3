@@ -116,3 +116,8 @@ model imeiHasGeo {
   imei    String  @unique
   kodeWilayah     String @unique
 }
+
+model fetchCounter {
+  count    Int  
+  date     String @unique
+}

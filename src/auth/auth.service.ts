@@ -17,11 +17,10 @@ export class AuthService {
 
   async signIn(idk: string, pass: string): Promise<any> {
     try {
-      console.log('idk: ', idk);
       const user: IUser = await this.usersService.findOne(idk);
-      console.log('user: ', user);
+
       const decodedPassword = await encodeStringToFourDigit(user?.password);
-      console.log('decodedPassword: ', decodedPassword);
+
       if (decodedPassword.toString() !== pass) {
         throw new UnauthorizedException();
       }

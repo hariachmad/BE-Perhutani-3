@@ -30,17 +30,25 @@ export class PenerimaanGetahService {
     startDate: Date,
     endDate: Date,
   ): Promise<any> {
-    const results = await this.prismaService.$queryRaw`
+    try {
+      const results = await this.prismaService.$queryRaw`
     SELECT * FROM public.penerimaan_getah where mb_upload_date between ${startDate}::timestamp and ${endDate}::timestamp and idk = ${idkMandor};
     `;
-    return results;
+      return results;
+    } catch (err) {
+      this.logger.log('Error findByMandorDate: ' + err);
+    }
   }
 
   public async findAllByDate(startDate: Date, endDate: Date): Promise<any> {
-    const results = await this.prismaService.$queryRaw`
+    try {
+      const results = await this.prismaService.$queryRaw`
     SELECT * FROM public.penerimaan_getah where mb_upload_date between ${startDate}::timestamp and ${endDate}::timestamp;
     `;
-    return results;
+      return results;
+    } catch (err) {
+      this.logger.log('Error menjalankan findAllByDate: ' + err);
+    }
   }
 
   public async findPrintableData(
@@ -60,9 +68,13 @@ export class PenerimaanGetahService {
     const y = dateRange[1];
     const z = idk;
     const query = `SELECT DISTINCT penerimaan_getah.id,penerimaan_getah.mb_idtrans,tpg."namaTpg",users."fullname",penerimaan_getah.mutu,penerimaan_getah.created_at,penerimaan_getah.jumlah,penerimaan_getah.harga_dasar,penerimaan_getah.harga_tambahan,penerimaan_getah.total,penyadap."namaPenyadap" from penerimaan_getah left join tpg on penerimaan_getah.tpg = tpg."kodeTpg" left join penyadap on penerimaan_getah.penyadap = penyadap."idPenyadap" left join users on penerimaan_getah.idk = users.idk where created_at BETWEEN '${x}' AND '${y}' AND penerimaan_getah.idk = '${z}'`;
-    const result = await this.prismaService.$queryRawUnsafe(query);
-    console.log('result : ', result);
-    return result;
+    try {
+      const result = await this.prismaService.$queryRawUnsafe(query);
+      console.log('result : ', result);
+      return result;
+    } catch (err) {
+      this.logger.log('Error saat menjalankan findPrintableData: ' + err);
+    }
   }
 
   async createPenerimaanGetah(createPenerimaanGetah: IPenerimaanGetah) {

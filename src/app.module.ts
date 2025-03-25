@@ -32,6 +32,8 @@ import { PrometheusCostumModule } from './prometheus/prometheus.module';
 import { PrometheusMiddleware } from './prometheus/prometheus.middleware';
 import { PrometheusService } from './prometheus/prometheus.service';
 import { PenerimaanGetahController } from './penerimaan-getah/penerimaan-getah.controller';
+import { FetchCounterController } from './fetch-counter/fetch-counter.controller';
+import { FetchCounterService } from './fetch-counter/fetch-counter.service';
 
 @Module({
   imports: [
@@ -63,6 +65,7 @@ import { PenerimaanGetahController } from './penerimaan-getah/penerimaan-getah.c
     FilesController,
     FakeDataController,
     InterceptorController,
+    FetchCounterController
   ],
   providers: [
     AppService,
@@ -70,7 +73,8 @@ import { PenerimaanGetahController } from './penerimaan-getah/penerimaan-getah.c
     FakeDataService,
     GlobalLogger,
     UserHasTpgService,
-    PrometheusService
+    PrometheusService,
+    FetchCounterService
   ],
 })
 export class AppModule {
