@@ -25,6 +25,24 @@ export class PenerimaanGetahService {
     }
   }
 
+  public async findByMandorDate(
+    idkMandor: number,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<any> {
+    const results = await this.prismaService.$queryRaw`
+    SELECT * FROM public.penerimaan_getah where mb_upload_date between ${startDate}::timestamp and ${endDate}::timestamp and idk = ${idkMandor};
+    `;
+    return results;
+  }
+
+  public async findAllByDate(startDate: Date, endDate: Date): Promise<any> {
+    const results = await this.prismaService.$queryRaw`
+    SELECT * FROM public.penerimaan_getah where mb_upload_date between ${startDate}::timestamp and ${endDate}::timestamp;
+    `;
+    return results;
+  }
+
   public async findPrintableData(
     dateRange: string[],
     idk: string,

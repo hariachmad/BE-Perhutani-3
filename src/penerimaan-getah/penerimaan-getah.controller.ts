@@ -4,7 +4,6 @@ import {
   Get,
   Ip,
   Res,
-  Param,
   Post,
   UseGuards,
   NotFoundException,
@@ -16,11 +15,11 @@ import { IPenerimaanGetah } from './interface/IPenerimaanGetah';
 import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { GlobalLogger } from 'src/global-logger/global-logger.service';
-import { EnumMonths } from 'src/pdf-service/type/EnumMonths';
 import { PdfServiceService } from 'src/pdf-service/pdf-service.service';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Response } from 'express';
+import { start } from 'repl';
 
 @Controller('penerimaan-getah')
 export class PenerimaanGetahController {
@@ -109,6 +108,50 @@ export class PenerimaanGetahController {
     return result;
   }
 
+  @Get('countByMandorByDate')
+  public async countForemanByTime(
+    @Query('idk') idMandor: number,
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ): Promise<any> {
+    console.log(
+      'idMandor: ',
+      idMandor,
+      ' startDate: ',
+      startDate,
+      'endDate: ',
+      endDate,
+    );
+    const results: [] = await this.penerimaanGetahService.findByMandorDate(
+      idMandor,
+      startDate,
+      endDate,
+    );
+    return results.length;
+  }
+
+  @Get('getAllByDate')
+  public async getAllByDate(
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ): Promise<any> {
+    const results: IPenerimaanGetah[] =
+      await this.penerimaanGetahService.findAllByDate(startDate, endDate);
+    return results;
+  }
+
+  @Get('countAllByDate')
+  public async countAllByDate(
+    @Query('startDate') startDate: Date,
+    @Query('endDate') endDate: Date,
+  ): Promise<any> {
+    const results: [] = await this.penerimaanGetahService.findAllByDate(
+      startDate,
+      endDate,
+    );
+    return results.length;
+  }
+
   @Get('pdf')
   public async findPrintableData(
     @Query('startDate') startDate: string,
@@ -116,7 +159,6 @@ export class PenerimaanGetahController {
     @Query('idk') idk: string,
     @Res() res: Response,
   ): Promise<any> {
-    console.log('startDate: ', startDate, 'endDate: ', endDate);
     const result = await this.penerimaanGetahService.findPrintableData(
       [startDate, endDate],
       idk,
