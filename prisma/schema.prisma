@@ -67,7 +67,8 @@ model geo {
 }
 
 model penyadap {
-  idPenyadap   String @id
+  id           Int  @id @default(autoincrement())
+  idPenyadap   String
   namaPenyadap String?
   kodePetak    String
   kodeTpg      String

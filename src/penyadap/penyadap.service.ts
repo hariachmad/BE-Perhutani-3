@@ -27,15 +27,25 @@ export class PenyadapService {
 
   async Upsert(createPenyadapDto: CreatePenyadapDto) {
     try {
-      return await this.prisma.penyadap.upsert({
+      const updatedPenyadapAndPetak = await this.prisma.penyadap.updateMany({
         where: {
           idPenyadap: createPenyadapDto.idPenyadap,
+          kodePetak: createPenyadapDto.kodePetak,
         },
-        update: {
-          kodeTpg: createPenyadapDto.kodeTpg,
-          namaPenyadap: createPenyadapDto.namaPenyadap,
+        data: createPenyadapDto,
+      });
+
+      if (updatedPenyadapAndPetak.count === 0) {
+        return await this.prisma.penyadap.create({
+          data: createPenyadapDto,
+        });
+      }
+
+      return await this.prisma.penyadap.findFirst({
+        where: {
+          idPenyadap: createPenyadapDto.idPenyadap,
+          kodePetak: createPenyadapDto.kodePetak,
         },
-        create: createPenyadapDto,
       });
     } catch (error) {
       this.logger.log(
@@ -43,6 +53,17 @@ export class PenyadapService {
       );
       this.Upsert(createPenyadapDto);
     }
+
+    // return await this.prisma.penyadap.upsert({
+    //   where: {
+    //     idPenyadap: createPenyadapDto.idPenyadap,
+    //   },
+    //   update: {
+    //     kodeTpg: createPenyadapDto.kodeTpg,
+    //     namaPenyadap: createPenyadapDto.namaPenyadap,
+    //   },
+    //   create: createPenyadapDto,
+    // });
   }
 
   async fetchPenyadap(npk: string, retries = 20, delay = 10000) {
